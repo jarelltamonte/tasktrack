@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 
 const Home = () => {
     const [tasks, setTasks] = useState([]);
+    const [editingIndex, setEditingIndex] = useState(null);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [newTask, setNewTask] = useState({
         name: "",
@@ -11,7 +12,7 @@ const Home = () => {
         priority: "Regular",
     });
 
-// PROGRESS SAVER ====================
+    // PROGRESS SAVER ====================
 
     // LOAD TASKS ON PAGE LOAD
     useEffect(() => {
@@ -26,13 +27,19 @@ const Home = () => {
         }
     }, [tasks]);
 
-// ADD TASK MODAL ====================
+    // ADD TASK MODAL ====================
 
-    function openModal() {
+    function openModal(index = null) {
+        setEditingIndex(index);
+        if (index !== null) {
+            setNewTask(tasks[index]);
+        }
         setIsModalOpen(true);
     }
+
     function closeModal() {
         setIsModalOpen(false);
+        setEditingIndex(null);
         setNewTask({ name: "", date: "", time: "", priority: "Regular" });
     }
 
@@ -64,11 +71,19 @@ const Home = () => {
         }
 
         // Sets the new task with all 3 details
-        setTasks([...tasks, { ...newTask, due: finalDue }]);
+        if (editingIndex !== null) {
+            // ✅ EDIT EXISTING TASK
+            const updated = [...tasks];
+            updated[editingIndex] = { ...newTask, due: finalDue };
+            setTasks(updated);
+        } else {
+            // ✅ ADD NEW TASK
+            setTasks([...tasks, { ...newTask, due: finalDue }]);
+        }
         closeModal();
     }
 
-// DELETE TASK BUTTON ====================
+    // DELETE TASK BUTTON ====================
 
     function deleteTask(index) {
         const newTasks = [...tasks];
@@ -76,7 +91,7 @@ const Home = () => {
         setTasks(newTasks);
     }
 
-// LOGIC ====================
+    // LOGIC ====================
     return (
         <div className="home-container">
             <h1>Welcome to TaskTrack!</h1>
@@ -93,6 +108,7 @@ const Home = () => {
                             </p>
                             <p>Due: {task.due}</p>
                             <p>Priority: {task.priority}</p>
+                            <button onClick={() => openModal(index)}>Edit</button>
                             <button onClick={() => deleteTask(index)}>Delete Task</button>
                         </div>
                     ))}
