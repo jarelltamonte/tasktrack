@@ -1,8 +1,15 @@
-import { Drawer, List, ListItem, ListItemText } from "@mui/material";
+import './Navigation.css';
 
-const Navigation = () =>{
+const Navigation = () => {
     return (
-        <h1>a</h1>
+        <div className="navigation-bar">
+            <h1>a</h1>
+            <div>
+                <link>
+
+                </link>
+            </div>
+        </div>
     );
 }
 

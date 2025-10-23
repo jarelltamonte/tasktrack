@@ -1,7 +1,9 @@
 .home-container{
-    background-color: #D9E021;
+    background-color: #f3f3f3;
     min-height: 100vh;
     margin: 0;
+    margin-left: 60px;
+    padding: 0px 10px 0px 10px;
 }
 
 h1{
