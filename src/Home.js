@@ -1,53 +1,94 @@
-import './Home.css'
-import { useState } from "react";
-
+import "./Home.css";
+import { useEffect, useState } from "react";
 
 const Home = () => {
     const [tasks, setTasks] = useState([]);
     const [isModalOpen, setIsModalOpen] = useState(false);
-    const [newTask, setNewTask] = useState({ name: "", due: "", priority: "Regular" });
+    const [newTask, setNewTask] = useState({
+        name: "",
+        date: "",
+        time: "",
+        priority: "Regular",
+    });
 
+    // LOAD TASKS ON PAGE LOAD
+    useEffect(() => {
+        const saved = localStorage.getItem("tasks");
+        if (saved) setTasks(JSON.parse(saved));
+    }, []);
 
-    // TASK BUTTONS ============
+    // SAVE TASKS WHEN THEY CHANGE
+    useEffect(() => {
+        if (tasks.length > 0) {
+            localStorage.setItem("tasks", JSON.stringify(tasks));
+        }
+    }, [tasks]);
 
+    // ADD TASK MODAL ==========
+    function openModal() {
+        setIsModalOpen(true);
+    }
+    function closeModal() {
+        setIsModalOpen(false);
+        setNewTask({ name: "", date: "", time: "", priority: "Regular" });
+    }
+
+    function handleSubmit() {
+        // Checks if there is a task name
+        if (!newTask.name.trim()) return alert("Task name is required.");
+
+        let finalDue = "No Due";
+
+        // If user enters time without datre, defaults to today
+        if (newTask.time && !newTask.date) {
+            const t = new Date();
+            const [h, m] = newTask.time.split(":");
+            t.setHours(h, m);
+            finalDue = `Today at ${t.toLocaleString("en-US", {
+                hour: "numeric",
+                minute: "2-digit",
+            })}`;
+        }
+        // If user enters FULL DATE + TIME
+        else if (newTask.date && newTask.time) {
+            const full = new Date(`${newTask.date}T${newTask.time}`);
+            finalDue = full.toLocaleString("en-US", {
+                month: "short",
+                day: "numeric",
+                hour: "numeric",
+                minute: "2-digit",
+            });
+        }
+
+        // Sets the new task with all 3 details
+        setTasks([...tasks, { ...newTask, due: finalDue }]);
+        closeModal();
+    }
+
+    // DELETE TASK BUTTON ========
     function deleteTask(index) {
         const newTasks = [...tasks];
         newTasks.splice(index, 1);
         setTasks(newTasks);
     }
 
-    // ADD TASK MODAL =============
-
-    function openModal() {
-        setIsModalOpen(true);
-    }
-
-    function closeModal() {
-        setIsModalOpen(false);
-        setNewTask({ name: "", due: "", priority: "Regular" });
-    }
-
-    function handleSubmit() {
-        if (!newTask.name.trim()) return alert("Task name is required."); //Ask
-        setTasks([...tasks, newTask]);
-        closeModal();
-    }
+    // LOGIC =====================
 
     return (
         <div className="home-container">
             <h1>Welcome to TaskTrack!</h1>
             <p>This is the main landing page of the application.</p>
 
-            <div class="task-container">
-
+            <div className="task-container">
                 <h1>Tasks</h1>
 
-                {/* TASK LIST CONTAINER */}
                 <div className="task-list">
                     {tasks.map((task, index) => (
                         <div key={index} className="task-card">
-                            <p><strong>{task.name}</strong></p>
-                            <p>Due: {task.due || "No Due"}</p>
+                            <p>
+                                <strong>{task.name}</strong>
+                            </p>
+                            <p>Due: {task.due}</p>
                             <p>Priority: {task.priority}</p>
                             <button onClick={() => deleteTask(index)}>Delete Task</button>
                         </div>
@@ -57,7 +98,6 @@ const Home = () => {
                 <button onClick={openModal} style={{ marginTop: "10px" }}>
                     + Add Task
                 </button>
-
             </div>
 
             {isModalOpen && (
@@ -74,16 +114,25 @@ const Home = () => {
                         />
 
                         <label>Due Date & Time</label>
-                        <input
-                            type="datetime-local"
-                            value={newTask.due}
-                            onChange={(e) => setNewTask({ ...newTask, due: e.target.value })}
-                        />
+                        <div style={{ display: "flex", gap: "10px" }}>
+                            <input
+                                type="date"
+                                value={newTask.date}
+                                onChange={(e) => setNewTask({ ...newTask, date: e.target.value })}
+                            />
+                            <input
+                                type="time"
+                                value={newTask.time}
+                                onChange={(e) => setNewTask({ ...newTask, time: e.target.value })}
+                            />
+                        </div>
 
                         <label>Priority</label>
                         <select
                             value={newTask.priority}
-                            onChange={(e) => setNewTask({ ...newTask, priority: e.target.value })}
+                            onChange={(e) =>
+                                setNewTask({ ...newTask, priority: e.target.value })
+                            }
                         >
                             <option>Urgent</option>
                             <option>Regular</option>
@@ -98,9 +147,7 @@ const Home = () => {
                 </div>
             )}
         </div>
-
-
     );
-}
+};
 
 export default Home;
