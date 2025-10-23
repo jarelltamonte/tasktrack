@@ -11,6 +11,8 @@ const Home = () => {
         priority: "Regular",
     });
 
+// PROGRESS SAVER ====================
+
     // LOAD TASKS ON PAGE LOAD
     useEffect(() => {
         const saved = localStorage.getItem("tasks");
@@ -24,7 +26,8 @@ const Home = () => {
         }
     }, [tasks]);
 
-    // ADD TASK MODAL ==========
+// ADD TASK MODAL ====================
+
     function openModal() {
         setIsModalOpen(true);
     }
@@ -65,15 +68,15 @@ const Home = () => {
         closeModal();
     }
 
-    // DELETE TASK BUTTON ========
+// DELETE TASK BUTTON ====================
+
     function deleteTask(index) {
         const newTasks = [...tasks];
         newTasks.splice(index, 1);
         setTasks(newTasks);
     }
 
-    // LOGIC =====================
-
+// LOGIC ====================
     return (
         <div className="home-container">
             <h1>Welcome to TaskTrack!</h1>
@@ -96,7 +99,7 @@ const Home = () => {
                 </div>
 
                 <button onClick={openModal} style={{ marginTop: "10px" }}>
-                    + Add Task
+                    Add Task
                 </button>
             </div>
 
