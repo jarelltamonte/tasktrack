@@ -51,16 +51,32 @@ h1{
 
   .task-list {
     display: flex;   
-    overflow-x: auto;      
+    overflow-x: auto;
+    overflow-y: auto;
+    max-height: 300px;      
     gap: 10px;            
     white-space: nowrap;  
     padding-bottom: 10px;
-    -webkit-overflow-scrolling: touch;   
+    -webkit-overflow-scrolling: touch; /*IOS Shenanigans*/   
   }
   
   .task-list::after {
     content: "";
     flex: 0 0 20vw;     /* change 25vw to control how much extra scroll space you want */
+  }
+
+  @media (max-width: 600px) {
+    .task-list {
+      flex-direction: column;   /* stack vertically */
+      overflow-x: hidden;       /* disable horizontal scroll */
+      overflow-y: auto;         /* enable vertical scroll */
+      white-space: normal;      /* allow text to wrap */
+      height: auto;             /* let content expand naturally */
+    }
+  
+    .task-list::after {
+      content: none;            /* remove fake spacer */
+    }
   }
 
   .task-card {
