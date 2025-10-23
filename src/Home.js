@@ -103,12 +103,12 @@ const Home = () => {
                 <div className="task-list">
                     {tasks.map((task, index) => (
                         <div key={index} className="task-card">
-                            <p>
+                            <p style={{ flex: "5px" }}>
                                 <strong>{task.name}</strong>
                             </p>
                             <p>Due: {task.due}</p>
                             <p>Priority: {task.priority}</p>
-                            <button onClick={() => openModal(index)}>Edit</button>
+                            
                             <button onClick={() => deleteTask(index)}>Delete Task</button>
                         </div>
                     ))}
