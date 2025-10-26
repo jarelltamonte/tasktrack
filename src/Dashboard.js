@@ -16,19 +16,19 @@ const Dashboard = () => {
       <div className="dashboard-stats">
         <div className="dash-card total">
           <h2>Total Tasks</h2>
-          <p>{total}</p>
+          <p className="number">{total}</p>
         </div>
         <div className="dash-card progress">
           <h2>In Progress</h2>
-          <p>{inProgress}</p>
+          <p className="number">{inProgress}</p>
         </div>
         <div className="dash-card completed">
           <h2>Completed</h2>
-          <p>{completed}</p>
+          <p className="number">{completed}</p>
         </div>
         <div className="dash-card deleted">
           <h2>Deleted</h2>
-          <p>{deletedCount}</p>
+          <p className="number">{deletedCount}</p>
         </div>
       </div>
     </div>

@@ -1,14 +1,36 @@
 .dashboard-container{
     background-color: #D9E021;
     min-height: 100vh;
+    height: fit-content;
     padding: 4%;
     margin-left: 150px;
+}
+
+.dashboard-stats{
+    display: flex;
+    justify-content: space-between;
+    margin: 0;
 }
 
 @media (max-width: 768px) {
     .dashboard-container{
         margin-left: 0;
         padding: 14% 4% 4%;
+    }
+
+    .dashboard-stats{
+        flex-direction: column;
+        align-items: center;
+        gap: 20px;
+    }
+    .dash-card.total, .dash-card.progress, .dash-card.deleted, .dash-card.completed {
+        width: 90%;
+        margin: 0 4%;
+        height: 120px;
+    }
+
+    .dash-card{
+        height: 150px;
     }
 }
 
@@ -26,17 +48,28 @@
 }
 
 .dash-card {
-  width: 200px;
+  min-width: 230px;
+  height: 300px;
   padding: 20px;
   border-radius: 12px;
   box-shadow: 0 4px 8px rgba(0,0,0,0.1);
   font-weight: 600;
   color: #333;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 
 .dash-card h2 {
   margin-bottom: 10px;
   font-size: 18px;
+}
+
+.number {
+  font-size: 48px;
+  font-weight: bold;
+  margin: 0;
 }
 
 .dash-card.total {

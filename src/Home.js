@@ -112,12 +112,12 @@ const Home = () => {
               (task, index) =>
                 task && (
                   <div key={index} className="task-card">
-                    <p>
+                    <p className="task-name">
                       <strong>{task.name || "Untitled Task"}</strong>
                     </p>
-                    <p>Due: {task.due || "No Due"}</p>
-                    <p>Priority: {task.priority || "Regular"}</p>
-                    <p>Status: {task.status || "Pending"}</p>
+                    <p className="due-date">⏱️ {task.due || "No Due"}</p>
+                    <p className="priotity">Priority: {task.priority || "Regular"}</p>
+                    <p className="status">{task.status || "Pending"}</p>
 
                     <div className="task-actions">
                       <button onClick={() => openModal(index)}>Edit</button>
@@ -153,7 +153,7 @@ const Home = () => {
       {isModalOpen && (
         <div className="modal-overlay">
           <div className="add-modal">
-            <h1>{editingIndex !== null ? "Edit Task" : "Add New Task"}</h1>
+            <h1>{editingIndex !== null ? "Edit Task" : "Add a New Task"}</h1>
 
             <label>Task Name</label>
             <input

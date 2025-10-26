@@ -71,7 +71,8 @@
   display: flex;
   overflow-x: auto;
   overflow-y: auto;
-  max-height: 300px;
+  /* max-height: 300px; */
+  margin-top: 16px;
   gap: 10px;
   white-space: nowrap;
   padding-bottom: 10px;
@@ -98,6 +99,8 @@
     overflow-x: hidden;
     overflow-y: auto;
     white-space: normal;
+    flex-direction: column;
+    height: 100vh !important;
   }
 
   .task-list::after {
@@ -136,11 +139,29 @@
   margin: 0px;
   justify-content: flex-start;
   min-width: 140px;
-  max-width: 140px;
+  max-width: 240px;
   white-space: normal;
   word-wrap: break-word;
   overflow-wrap: break-word;
   overflow-y: auto;
+}
+
+.task-name{
+  font-size: 22px;
+  margin: 0;
+}
+
+.due-date{
+  margin-top: 0;
+}
+
+.status, .priotity{
+  margin: 0;
+}
+
+.status{
+  margin-bottom: 16px;
+  font-weight: 600;
 }
 
 @media (max-width: 600px) {
