@@ -4,3 +4,10 @@
     padding: 4%;
     margin-left: 150px;
 }
+
+@media (max-width: 768px) {
+    .dashboard-container{
+        margin-left: 0;
+        padding: 14% 4% 4%;
+    }
+}

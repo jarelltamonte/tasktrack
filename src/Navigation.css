@@ -3,7 +3,7 @@
     padding: 10px 20px;
     display: flex;
     top: 0;
-    height: 100vh;
+    height: 100%;
     width: 150px;
     display: flex;
     flex-direction: column;
