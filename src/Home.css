@@ -94,11 +94,10 @@
   }
 
   .task-list {
-    flex-direction: column;
+    flex-direction: row;
     overflow-x: hidden;
     overflow-y: auto;
     white-space: normal;
-    height: auto;
   }
 
   .task-list::after {
@@ -134,7 +133,7 @@
   display: flex;
   flex-direction: column;
   gap: 0px;
-  margin: 0;
+  margin: 0px;
   justify-content: flex-start;
   min-width: 140px;
   max-width: 140px;
@@ -145,6 +144,9 @@
 }
 
 @media (max-width: 600px) {
+  .task-list{
+    height: 100%;
+  }
   .task-card {
     background-color: #d9e021;
     border-radius: 20px;
@@ -153,14 +155,13 @@
     display: flex;
     flex-direction: row;
     gap: 0px;
-    margin: 10px;
+    margin: 0;
     justify-content: flex-start;
-
+    flex-direction: column;
+    min-height: 200px;
     min-width: unset;
     max-width: unset;
-    min-height: 140px;
-    max-height: 140px;
-
+    height: fit-content;
     white-space: normal;
     word-wrap: break-word;
     overflow-wrap: break-word;
