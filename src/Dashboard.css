@@ -11,3 +11,43 @@
         padding: 14% 4% 4%;
     }
 }
+
+.dashboard-page {
+  padding: 30px;
+  text-align: center;
+}
+
+.dashboard-cards {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 20px;
+  margin-top: 30px;
+}
+
+.dash-card {
+  width: 200px;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  font-weight: 600;
+  color: #333;
+}
+
+.dash-card h2 {
+  margin-bottom: 10px;
+  font-size: 18px;
+}
+
+.dash-card.total {
+  background-color: #e0f7fa;
+}
+.dash-card.progress {
+  background-color: #fff3cd;
+}
+.dash-card.completed {
+  background-color: #d4edda;
+}
+.dash-card.deleted {
+  background-color: #f8d7da;
+}

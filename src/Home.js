@@ -1,9 +1,10 @@
 import "./Home.css";
 import { useEffect, useState } from "react";
 import { FaPlus } from "react-icons/fa";
+import { useTasks } from "./TaskContext"; 
 
 const Home = () => {
-  const [tasks, setTasks] = useState([]);
+  const {tasks, setTasks, deleteTask } = useTasks();
   const [editingIndex, setEditingIndex] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [newTask, setNewTask] = useState({
@@ -32,7 +33,7 @@ const Home = () => {
         setTasks([]);
       }
     }
-  }, []);
+  }, [setTasks]);
 
   // ✅ SAVE TASKS WHEN THEY CHANGE
   useEffect(() => {
@@ -60,7 +61,6 @@ const Home = () => {
     if (!newTask.name.trim()) return alert("Task name is required.");
 
     let finalDue = "No Due";
-
     if (newTask.time && !newTask.date) {
       const t = new Date();
       const [h, m] = newTask.time.split(":");
@@ -90,10 +90,10 @@ const Home = () => {
     closeModal();
   }
 
-  function deleteTask(index) {
-    const newTasks = [...tasks];
-    newTasks.splice(index, 1);
-    setTasks(newTasks);
+  function updateStatus(index, status) {
+    const updated = [...tasks];
+    updated[index] = { ...updated[index], status };
+    setTasks(updated);
   }
 
   return (
@@ -117,8 +117,24 @@ const Home = () => {
                     </p>
                     <p>Due: {task.due || "No Due"}</p>
                     <p>Priority: {task.priority || "Regular"}</p>
-                    <button onClick={() => openModal(index)}>Edit</button>
-                    <button onClick={() => deleteTask(index)}>Delete</button>
+                    <p>Status: {task.status || "Pending"}</p>
+
+                    <div className="task-actions">
+                      <button onClick={() => openModal(index)}>Edit</button>
+                      <button onClick={() => deleteTask(index)}>Delete</button>
+                      <button
+                        onClick={() => updateStatus(index, "In Progress")}
+                        disabled={task.status === "In Progress"}
+                      >
+                        Mark In Progress
+                      </button>
+                      <button
+                        onClick={() => updateStatus(index, "Completed")}
+                        disabled={task.status === "Completed"}
+                      >
+                        Mark Completed
+                      </button>
+                    </div>
                   </div>
                 )
             )
