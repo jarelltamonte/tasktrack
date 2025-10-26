@@ -99,7 +99,7 @@ const Home = () => {
   return (
     <div className="home-container">
       <h1 className="header">Welcome to TaskTrack!</h1>
-      <p>This is the main landing page of the application.</p>
+      <p>Your task tracker bestie 📚.</p>
 
       <div className="task-container">
         <h1 className="header">Tasks</h1>
