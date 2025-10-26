@@ -2,17 +2,27 @@
     background-color: #f3f3f3;
     min-height: 100vh;
     margin: 0;
-    margin-left: 60px;
-    padding: 0px 10px 0px 10px;
+    margin-left: 150px;
+    padding: 4% 4%;
 }
 
-h1 {
+.header-section{
+    position: fixed;
+    top: 0;
+    height: 100px;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    background-color: black;
+}
+
+.header {
     margin: 0;
 }
 
 .task-container {
     background-color: grey;
-    padding: 20px;
+    padding: 0;
 }
 
 .modal-overlay {
@@ -93,6 +103,24 @@ h1 {
         content: none;
         /* remove fake spacer */
     }
+}
+
+.add-button{
+    background-color: #D9E021;
+    border: none;
+    padding: 2%;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 32px;
+    font-weight: 400;
+    margin: 0;
+    box-shadow: 2px 2px 5px rgba(0,0,0,0.3);
+    bottom: 4%;
+    right: 4%;
+    position: fixed;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .task-card {

@@ -1,5 +1,6 @@
 .dashboard-container{
     background-color: #D9E021;
     min-height: 100vh;
-    margin: 0;
+    padding: 4%;
+    margin-left: 150px;
 }

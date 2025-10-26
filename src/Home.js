@@ -1,5 +1,7 @@
 import "./Home.css";
 import { useEffect, useState } from "react";
+import { FaPlus } from "react-icons/fa";
+
 
 const Home = () => {
     const [tasks, setTasks] = useState([]);
@@ -12,27 +14,39 @@ const Home = () => {
         priority: "Regular",
     });
 
-    // PROGRESS SAVER ====================
-
-    // LOAD TASKS ON PAGE LOAD
+    // ✅ LOAD TASKS SAFELY ON PAGE LOAD
     useEffect(() => {
         const saved = localStorage.getItem("tasks");
-        if (saved) setTasks(JSON.parse(saved));
+        if (saved) {
+            try {
+                const parsed = JSON.parse(saved);
+                if (Array.isArray(parsed)) {
+                    setTasks(parsed);
+                } else {
+                    console.warn("Invalid tasks data. Resetting...");
+                    localStorage.removeItem("tasks");
+                    setTasks([]);
+                }
+            } catch (err) {
+                console.error("Error parsing saved tasks:", err);
+                localStorage.removeItem("tasks");
+                setTasks([]);
+            }
+        }
     }, []);
 
-    // SAVE TASKS WHEN THEY CHANGE
+    // ✅ SAVE TASKS WHEN THEY CHANGE
     useEffect(() => {
-        if (tasks.length > 0) {
-            localStorage.setItem("tasks", JSON.stringify(tasks));
-        }
+        localStorage.setItem("tasks", JSON.stringify(tasks));
     }, [tasks]);
 
-    // ADD TASK MODAL ====================
-
+    // ✅ OPEN / CLOSE MODAL
     function openModal(index = null) {
         setEditingIndex(index);
-        if (index !== null) {
+        if (index !== null && tasks[index]) {
             setNewTask(tasks[index]);
+        } else {
+            setNewTask({ name: "", date: "", time: "", priority: "Regular" });
         }
         setIsModalOpen(true);
     }
@@ -44,12 +58,10 @@ const Home = () => {
     }
 
     function handleSubmit() {
-        // Checks if there is a task name
         if (!newTask.name.trim()) return alert("Task name is required.");
 
         let finalDue = "No Due";
 
-        // If user enters time without datre, defaults to today
         if (newTask.time && !newTask.date) {
             const t = new Date();
             const [h, m] = newTask.time.split(":");
@@ -59,7 +71,6 @@ const Home = () => {
                 minute: "2-digit",
             })}`;
         }
-        // If user enters FULL DATE + TIME
         else if (newTask.date && newTask.time) {
             const full = new Date(`${newTask.date}T${newTask.time}`);
             finalDue = full.toLocaleString("en-US", {
@@ -70,20 +81,16 @@ const Home = () => {
             });
         }
 
-        // Sets the new task with all 3 details
         if (editingIndex !== null) {
-            // ✅ EDIT EXISTING TASK
             const updated = [...tasks];
             updated[editingIndex] = { ...newTask, due: finalDue };
             setTasks(updated);
         } else {
-            // ✅ ADD NEW TASK
             setTasks([...tasks, { ...newTask, due: finalDue }]);
         }
+
         closeModal();
     }
-
-    // DELETE TASK BUTTON ====================
 
     function deleteTask(index) {
         const newTasks = [...tasks];
@@ -91,38 +98,43 @@ const Home = () => {
         setTasks(newTasks);
     }
 
-    // LOGIC ====================
     return (
         <div className="home-container">
-            <h1>Welcome to TaskTrack!</h1>
+            <h1 className="header">Welcome to TaskTrack!</h1>
             <p>This is the main landing page of the application.</p>
 
             <div className="task-container">
-                <h1>Tasks</h1>
+                <h1 className="header">Tasks</h1>
 
                 <div className="task-list">
-                    {tasks.map((task, index) => (
-                        <div key={index} className="task-card">
-                            <p style={{ flex: "5px" }}>
-                                <strong>{task.name}</strong>
-                            </p>
-                            <p>Due: {task.due}</p>
-                            <p>Priority: {task.priority}</p>
-                            
-                            <button onClick={() => deleteTask(index)}>Delete Task</button>
-                        </div>
-                    ))}
+                    {tasks.length === 0 ? (
+                        <p>No tasks yet. Add one!</p>
+                    ) : (
+                        tasks.map((task, index) => (
+                            task && (
+                                <div key={index} className="task-card">
+                                    <p>
+                                        <strong>{task.name || "Untitled Task"}</strong>
+                                    </p>
+                                    <p>Due: {task.due || "No Due"}</p>
+                                    <p>Priority: {task.priority || "Regular"}</p>
+                                    <button onClick={() => openModal(index)}>Edit</button>
+                                    <button onClick={() => deleteTask(index)}>Delete</button>
+                                </div>
+                            )
+                        ))
+                    )}
                 </div>
 
-                <button onClick={openModal} style={{ marginTop: "10px" }}>
-                    Add Task
+                <button onClick={() => openModal()} style={{ marginTop: "10px" }} className="add-button">
+                    <FaPlus />
                 </button>
             </div>
 
             {isModalOpen && (
                 <div className="modal-overlay">
                     <div className="add-modal">
-                        <h1>Add New Task</h1>
+                        <h1>{editingIndex !== null ? "Edit Task" : "Add New Task"}</h1>
 
                         <label>Task Name</label>
                         <input
@@ -149,9 +161,7 @@ const Home = () => {
                         <label>Priority</label>
                         <select
                             value={newTask.priority}
-                            onChange={(e) =>
-                                setNewTask({ ...newTask, priority: e.target.value })
-                            }
+                            onChange={(e) => setNewTask({ ...newTask, priority: e.target.value })}
                         >
                             <option>Urgent</option>
                             <option>Regular</option>
@@ -160,7 +170,9 @@ const Home = () => {
 
                         <div className="modal-buttons">
                             <button onClick={closeModal}>Cancel</button>
-                            <button onClick={handleSubmit}>Save Task</button>
+                            <button onClick={handleSubmit}>
+                                {editingIndex !== null ? "Update Task" : "Save Task"}
+                            </button>
                         </div>
                     </div>
                 </div>

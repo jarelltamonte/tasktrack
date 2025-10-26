@@ -7,7 +7,7 @@ function App() {
   return (
     <BrowserRouter>
       <Navigation />
-      <Routes> {/* Routes must directly wrap the Route components */}
+      <Routes> 
         <Route path="/" element={<Home />} />
         <Route path="/home" element={<Home />} />
         <Route path="/dashboard" element={<Dashboard />} />
