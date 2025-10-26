@@ -23,6 +23,7 @@
     padding: 2px;
     background-color: #f3f3f3;
     box-shadow: 2px 0px 5px rgba(0,0,0,0.3);
+    user-select: none;
 }
 
 /* .logo-image{
@@ -57,4 +58,36 @@
     height: 44px;
     width: 44px;
     color: black;
+}
+
+.hamburger {
+  display: none;
+  position: fixed;
+  top: 15px;
+  left: 15px;
+  font-size: 22px;
+  cursor: pointer;
+  z-index: 1000;
+  background-color: #D9E021;
+  padding: 8px;
+  border-radius: 8px;
+  box-shadow: 2px 0px 5px rgba(0, 0, 0, 0.3);
+}
+
+/* Hide sidebar by default on mobile */
+@media (max-width: 768px) {
+  .navigation-bar {
+    transform: translateX(-100%);
+    transition: transform 0.3s ease-in-out;
+  }
+
+  .navigation-bar.active {
+    transform: translateX(0);
+  }
+
+  .hamburger {
+    display: block;
+  }
+
+  /* .nav-item */
 }
